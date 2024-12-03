@@ -9,6 +9,13 @@ fn main() {
     let (list1, list2) = collect_lists(TRIVIAL_EXAMPLE);
     let dtotal = total_distance(list1, list2);
     println!("[trivial] total distance = {}", dtotal);
+
+    let input_text = String::from_utf8(std::fs::read("input.txt").expect("couldn't read input file"))
+        .expect("couldn't parse input file into utf-8");
+
+    let (list1, list2) = collect_lists(&input_text);
+    let dtotal = total_distance(list1, list2);
+    println!("[input]   total distance = {}", dtotal);
 }
 
 /// given the raw input as a string, returns the two lists sorted ascending
