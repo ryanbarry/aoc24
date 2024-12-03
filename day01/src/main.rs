@@ -19,7 +19,7 @@ fn main() {
 }
 
 /// given the raw input as a string, returns the two lists sorted ascending
-fn collect_lists(input: &str) -> (Vec<isize>, Vec<isize>) {
+fn collect_lists(input: &str) -> (Vec<usize>, Vec<usize>) {
     let mut list1 = vec![];
     let mut list2 = vec![];
 
@@ -27,10 +27,10 @@ fn collect_lists(input: &str) -> (Vec<isize>, Vec<isize>) {
         let lineno = idx + 1;
         let strings: Vec<_> = line.split_ascii_whitespace().collect();
         assert_eq!(strings.len(), 2, "line {} doesn't have 2 numbers", lineno);
-        let num1: isize = strings[0]
+        let num1: usize = strings[0]
             .parse()
             .expect(format!("first number on line {} doesn't parse", lineno).as_str());
-        let num2: isize = strings[1]
+        let num2: usize = strings[1]
             .parse()
             .expect(format!("second number on line {} doesn't parse", lineno).as_str());
         list1.push(num1);
@@ -41,7 +41,7 @@ fn collect_lists(input: &str) -> (Vec<isize>, Vec<isize>) {
 }
 
 /// given two SORTED lists, return sum of pairwise distances
-fn total_distance(list1: Vec<isize>, list2: Vec<isize>) -> usize {
+fn total_distance(list1: Vec<usize>, list2: Vec<usize>) -> usize {
     let list1 = {
         let mut tmp = list1.clone();
         tmp.sort();
