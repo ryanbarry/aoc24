@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 const TRIVIAL_EXAMPLE: &str = r#"3   4
 4   3
 2   5
@@ -16,6 +18,23 @@ fn main() {
     let (list1, list2) = collect_lists(&input_text);
     let dtotal = total_distance(&list1, &list2);
     println!("[input]   total distance = {}", dtotal);
+
+    let mut r_appearance_count: HashMap<usize, usize> = HashMap::new();
+    for num in list2 {
+        if let Some(x) = r_appearance_count.get_mut(&num) {
+            *x += 1;
+        } else {
+            r_appearance_count.insert(num, 1);
+        }
+    }
+    let similarity = list1.iter().fold(0, |acc, num| {
+        if let Some(r_appearances) = r_appearance_count.get(num) {
+            acc + num * r_appearances
+        } else {
+            acc
+        }
+    });
+    println!("similarity score = {}", similarity);
 }
 
 /// given the raw input as a string, returns the two lists sorted ascending
