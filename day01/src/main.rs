@@ -7,20 +7,8 @@ const TRIVIAL_EXAMPLE: &str = r#"3   4
 
 fn main() {
     let (list1, list2) = collect_lists(TRIVIAL_EXAMPLE);
-    let list1 = {
-        let mut tmp = list1.clone();
-        tmp.sort();
-        tmp
-    };
-    let list2 = {
-        let mut tmp = list2.clone();
-        tmp.sort();
-        tmp
-    };
-    let total_distance = list1.iter().zip(list2.clone()).fold(0, |acc, (x, y)| {
-        acc + x.abs_diff(y)
-    });
-    println!("total distance = {}", total_distance);
+    let dtotal = total_distance(list1, list2);
+    println!("[trivial] total distance = {}", dtotal);
 }
 
 /// given the raw input as a string, returns the two lists sorted ascending
@@ -43,4 +31,24 @@ fn collect_lists(input: &str) -> (Vec<isize>, Vec<isize>) {
     }
 
     (list1, list2)
+}
+
+/// given two SORTED lists, return sum of pairwise distances
+fn total_distance(list1: Vec<isize>, list2: Vec<isize>) -> usize {
+    let list1 = {
+        let mut tmp = list1.clone();
+        tmp.sort();
+        tmp
+    };
+    let list2 = {
+        let mut tmp = list2.clone();
+        tmp.sort();
+        tmp
+    };
+    let total_distance = list1
+        .iter()
+        .zip(list2.clone())
+        .fold(0, |acc, (x, y)| acc + x.abs_diff(y));
+
+    total_distance
 }
