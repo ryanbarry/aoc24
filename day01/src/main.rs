@@ -7,10 +7,6 @@ const TRIVIAL_EXAMPLE: &str = r#"3   4
 
 fn main() {
     let (list1, list2) = collect_lists(TRIVIAL_EXAMPLE);
-    list1.iter().zip(list2.clone()).for_each(|(x, y)| {
-        println!("{} {}", x, y);
-    });
-    println!("now, for my next trick: sorting!");
     let list1 = {
         let mut tmp = list1.clone();
         tmp.sort();
@@ -21,11 +17,8 @@ fn main() {
         tmp.sort();
         tmp
     };
-    let mut total_distance = 0;
-    list1.iter().zip(list2.clone()).for_each(|(x, y)| {
-        let d = x.abs_diff(y);
-        total_distance += d;
-        println!("{} {}; dist={}", x, y, d);
+    let total_distance = list1.iter().zip(list2.clone()).fold(0, |acc, (x, y)| {
+        acc + x.abs_diff(y)
     });
     println!("total distance = {}", total_distance);
 }
