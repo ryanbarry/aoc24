@@ -21,9 +21,13 @@ fn main() {
         tmp.sort();
         tmp
     };
+    let mut total_distance = 0;
     list1.iter().zip(list2.clone()).for_each(|(x, y)| {
-        println!("{} {}", x, y);
+        let d = x.abs_diff(y);
+        total_distance += d;
+        println!("{} {}; dist={}", x, y, d);
     });
+    println!("total distance = {}", total_distance);
 }
 
 /// given the raw input as a string, returns the two lists sorted ascending
