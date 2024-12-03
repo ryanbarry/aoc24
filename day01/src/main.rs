@@ -7,14 +7,14 @@ const TRIVIAL_EXAMPLE: &str = r#"3   4
 
 fn main() {
     let (list1, list2) = collect_lists(TRIVIAL_EXAMPLE);
-    let dtotal = total_distance(list1, list2);
+    let dtotal = total_distance(&list1, &list2);
     println!("[trivial] total distance = {}", dtotal);
 
     let input_text = String::from_utf8(std::fs::read("input.txt").expect("couldn't read input file"))
         .expect("couldn't parse input file into utf-8");
 
     let (list1, list2) = collect_lists(&input_text);
-    let dtotal = total_distance(list1, list2);
+    let dtotal = total_distance(&list1, &list2);
     println!("[input]   total distance = {}", dtotal);
 }
 
@@ -41,7 +41,7 @@ fn collect_lists(input: &str) -> (Vec<usize>, Vec<usize>) {
 }
 
 /// given two SORTED lists, return sum of pairwise distances
-fn total_distance(list1: Vec<usize>, list2: Vec<usize>) -> usize {
+fn total_distance(list1: &Vec<usize>, list2: &Vec<usize>) -> usize {
     let list1 = {
         let mut tmp = list1.clone();
         tmp.sort();
