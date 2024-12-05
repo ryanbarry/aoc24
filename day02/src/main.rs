@@ -13,19 +13,34 @@ fn main() {
         let report_lines = input_reports.split_terminator('\n');
         let num_safe = count_safe_lines_p1(report_lines.clone());
         println!("[partone] number of safe reports: {}", num_safe);
-        // let num_safe = count_safe_lines_p2(report_lines.clone());
-        // println!("[parttwo] number of safe reports: {}", num_safe);
+        let num_safe = count_safe_lines_p2(report_lines.clone());
+        println!("[parttwo] number of safe reports: {}", num_safe);
     } else {
         println!("could not read input file");
     }
 }
 
-// fn count_safe_lines_p2<'a>(lines: impl Iterator<Item = &'a str>) -> usize {
-//     lines
-//         .map(|line| check_report_safety(line))
-//         .filter(|x| *x < 2)
-//         .count()
-// }
+fn count_safe_lines_p2<'a>(lines: impl Iterator<Item = &'a str>) -> usize {
+    lines
+        .map(|line| {
+            line
+                .split_ascii_whitespace()
+                .map(|s| s.parse().expect("couldn't parse number"))
+                .collect::<Vec<usize>>()
+        })
+        .filter_map(|report| {
+            (0..report.len())
+                .map(|idx| {
+                    let with_one_removed = {
+                        let mut tmp = report.clone();
+                        tmp.remove(idx);
+                        tmp
+                    };
+                    check_report_safety(&with_one_removed)
+                })
+                .any(|x| x).then_some(())
+        }).count()
+}
 
 fn count_safe_lines_p1<'a>(lines: impl Iterator<Item = &'a str>) -> usize {
     lines
