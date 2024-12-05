@@ -9,12 +9,22 @@ fn main() {
     let num_safe = count_safe_lines_p1(TRIVIAL_EXAMPLE.split_terminator('\n'));
     println!("[trivial] number of safe reports: {}", num_safe);
 
-    if let Ok(part1_reports) = std::fs::read_to_string("input.txt") {
-        let num_safe = count_safe_lines_p1(part1_reports.split_terminator('\n'));
+    if let Ok(input_reports) = std::fs::read_to_string("input.txt") {
+        let report_lines = input_reports.split_terminator('\n');
+        let num_safe = count_safe_lines_p1(report_lines.clone());
         println!("[partone] number of safe reports: {}", num_safe);
+        let num_safe = count_safe_lines_p2(report_lines.clone());
+        println!("[parttwo] number of safe reports: {}", num_safe);
     } else {
         println!("could not read input file");
     }
+}
+
+fn count_safe_lines_p2<'a>(lines: impl Iterator<Item = &'a str>) -> usize {
+    lines
+        .map(|line| check_report_safety(line))
+        .filter(|x| *x < 2)
+        .count()
 }
 
 fn count_safe_lines_p1<'a>(lines: impl Iterator<Item = &'a str>) -> usize {
