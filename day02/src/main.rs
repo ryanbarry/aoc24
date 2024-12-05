@@ -27,6 +27,11 @@ fn main() {
 //         .count()
 // }
 
+
+fn all_inc_or_dec(numlist: &Vec<usize>) -> bool {
+   numlist.is_sorted_by(|a, b| a <= b) || numlist.is_sorted_by(|a, b| a >= b)
+}
+
 fn count_safe_lines_p1<'a>(lines: impl Iterator<Item = &'a str>) -> usize {
     lines
         .filter_map(|line| check_report_safety_p1(line).then_some(()))
@@ -39,12 +44,10 @@ fn check_report_safety_p1(line: &str) -> bool {
         .map(|s| s.parse().expect("couldn't parse number"))
         .collect::<Vec<usize>>();
 
-    let all_inc_or_dec = levels.is_sorted_by(|a, b| a <= b) || levels.is_sorted_by(|a, b| a >= b);
-
     let adj_diff_small = levels.windows(2).all(|elems| {
         let ad = elems[0].abs_diff(elems[1]);
         ad <= 3 && ad >= 1
     });
 
-    all_inc_or_dec && adj_diff_small
+    all_inc_or_dec(&levels) && adj_diff_small
 }
