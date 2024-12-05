@@ -13,54 +13,38 @@ fn main() {
         let report_lines = input_reports.split_terminator('\n');
         let num_safe = count_safe_lines_p1(report_lines.clone());
         println!("[partone] number of safe reports: {}", num_safe);
-        let num_safe = count_safe_lines_p2(report_lines.clone());
-        println!("[parttwo] number of safe reports: {}", num_safe);
+        // let num_safe = count_safe_lines_p2(report_lines.clone());
+        // println!("[parttwo] number of safe reports: {}", num_safe);
     } else {
         println!("could not read input file");
     }
 }
 
-fn count_safe_lines_p2<'a>(lines: impl Iterator<Item = &'a str>) -> usize {
-    lines
-        .map(|line| check_report_safety(line))
-        .filter(|x| *x < 2)
-        .count()
-}
+// fn count_safe_lines_p2<'a>(lines: impl Iterator<Item = &'a str>) -> usize {
+//     lines
+//         .map(|line| check_report_safety(line))
+//         .filter(|x| *x < 2)
+//         .count()
+// }
 
 fn count_safe_lines_p1<'a>(lines: impl Iterator<Item = &'a str>) -> usize {
     lines
-        .map(|line| check_report_safety(line))
-        .filter(|x| *x < 1)
+        .filter_map(|line| check_report_safety_p1(line).then_some(()))
         .count()
 }
 
-fn check_report_safety(line: &str) -> usize {
+fn check_report_safety_p1(line: &str) -> bool {
     let levels = line
         .split_ascii_whitespace()
         .map(|s| s.parse().expect("couldn't parse number"))
         .collect::<Vec<usize>>();
 
-    let mut unsafe_level_count = 0;
-    let a = levels[0];
-    let b = levels[0 + 1];
-    let diff = a.abs_diff(b);
-    if diff < 1 || diff > 3 {
-        unsafe_level_count += 1;
-    }
-    let decreasing = if a > b { true } else { false };
-    for i in 1..levels.len() - 1 {
-        let a = levels[i];
-        let b = levels[i + 1];
-        let diff = a.abs_diff(b);
-        if diff < 1 || diff > 3 {
-            unsafe_level_count += 1;
-        }
-        if decreasing && a < b {
-            unsafe_level_count += 1;
-        } else if !decreasing && a > b {
-            unsafe_level_count += 1;
-        }
-    }
+    let all_inc_or_dec = levels.is_sorted_by(|a, b| a <= b) || levels.is_sorted_by(|a, b| a >= b);
 
-    unsafe_level_count
+    let adj_diff_small = levels.windows(2).all(|elems| {
+        let ad = elems[0].abs_diff(elems[1]);
+        ad <= 3 && ad >= 1
+    });
+
+    all_inc_or_dec && adj_diff_small
 }
