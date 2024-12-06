@@ -6,6 +6,14 @@ const TRIVIAL_EXAMPLE: &str =
 fn main() {
     let total = parse_and_exec(TRIVIAL_EXAMPLE);
     println!("[trivial] {}", total);
+
+    let input = match std::fs::read_to_string("input.txt") {
+        Ok(contents) => contents,
+        Err(err) => panic!("failed to open input file: {err:?}"),
+    };
+
+    let total = parse_and_exec(&input);
+    println!("[partone] {}", total);
 }
 
 #[test]
