@@ -23,8 +23,7 @@ fn main() {
 fn count_safe_lines_p2<'a>(lines: impl Iterator<Item = &'a str>) -> usize {
     lines
         .map(|line| {
-            line
-                .split_ascii_whitespace()
+            line.split_ascii_whitespace()
                 .map(|s| s.parse().expect("couldn't parse number"))
                 .collect::<Vec<usize>>()
         })
@@ -38,15 +37,16 @@ fn count_safe_lines_p2<'a>(lines: impl Iterator<Item = &'a str>) -> usize {
                     };
                     check_report_safety(&with_one_removed)
                 })
-                .any(|x| x).then_some(())
-        }).count()
+                .any(|x| x)
+                .then_some(())
+        })
+        .count()
 }
 
 fn count_safe_lines_p1<'a>(lines: impl Iterator<Item = &'a str>) -> usize {
     lines
         .map(|line| {
-            line
-                .split_ascii_whitespace()
+            line.split_ascii_whitespace()
                 .map(|s| s.parse().expect("couldn't parse number"))
                 .collect::<Vec<usize>>()
         })
